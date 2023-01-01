@@ -1,0 +1,80 @@
+{
+	"@context": "something",
+	"description": "something",
+	"eventDetection": [
+		{
+			"name": "Ventilator centar",
+			"connector": "iot connector",
+			"type": "monitor",
+			"topic": "ventilator/1",
+			"date": {
+				"from": "2021-03-03",
+				"to": "2021-03-06"
+			},
+			"expectedEvents": [
+				{
+					"conditions": {
+						"all": [
+							{
+								"fact": "origin",
+								"operator": "equal",
+								"value": "ventilator"
+							},
+							{
+								"fact": "id",
+								"operator": "equal",
+								"value": "1"
+							},
+							{
+								"fact": "value",
+								"operator": "greaterThanInclusive",
+								"value": 40
+							}
+						]
+					},
+					"event": {
+						"type": "guzva",
+						"params": {
+							"message": "Detektovan dogadjaj"
+						}
+					}
+				}
+			]
+		}
+	],
+	"actionExecution": [
+		{
+			"conditions": {
+				"all": [
+					{
+						"fact": "events",
+						"operator": "detected",
+						"value": {
+							"type": "vrucina",
+							"freshness": "last week",
+							"frequency": "multiple",
+							"quantity": "5"
+						}
+					}
+				]
+			},
+			"event": {
+				"type": "action",
+				"params": {
+					"title": "Student made the athletics honor-roll",
+					"type": "promenisemafor",
+					"connector": "Mutation connector",
+					"frequency": "once a minute",
+					"date": {
+						"from": "2021-03-03",
+						"to": "2021-03-06"
+					},
+					"content": {
+						"nodeid": "111",
+						"mutationid": "11"
+					}
+				}
+			}
+		}
+	]
+}
