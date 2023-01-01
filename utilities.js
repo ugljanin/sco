@@ -67,6 +67,7 @@ export const connectToMQTT = async () => {
 
 export const getExpectedEvents = async ( scoDefinition ) => {
   console.log( 'Loading expected events.' );
+  console.log( scoDefinition);
   let arr=[];
 
   if ( !scoDefinition.eventDetection ) {
@@ -77,12 +78,12 @@ export const getExpectedEvents = async ( scoDefinition ) => {
     eventDetection.expectedEvents.forEach( ( rule ) => {
 
       const obj={};
-      if( scoDefinition.eventDetection.sourceType === 'social-connector' ) {
-        obj.connector=scoDefinition.eventDetection.connector;
-        obj.frequency=scoDefinition.eventDetection.content?.frequency;
+      if( eventDetection.sourceType === 'social-connector' ) {
+        obj.connector=eventDetection.sourceType;
+        obj.frequency=eventDetection.content?.frequency;
       }
-      if( scoDefinition.eventDetection.sourceType === 'iot-connector' ) {
-        obj.connector=scoDefinition.eventDetection.connector;
+      if( eventDetection.sourceType === 'iot-connector' ) {
+        obj.connector=eventDetection.sourceType;
         obj.frequency='once in 2 seconds';
       }
       obj.type=rule.event.type;
