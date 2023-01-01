@@ -184,3 +184,12 @@ export const getMaximumOccurancesObject = ( freshness ) => {
 
   return obj;
 }
+
+export const addToArrayOfObjects = ( array, element ) => {
+	console.log(array.length, parseInt( process.env.MAXIMUM_NUMBER_OF_DETECTED_EVENTS_STORED, 10 ) );
+  if ( array.length === parseInt( process.env.MAXIMUM_NUMBER_OF_DETECTED_EVENTS_STORED, 10 ) ) {
+		array.pop();  // remove the first element
+  }
+  array.unshift( element );  // add the new element to the end
+  return array;
+}

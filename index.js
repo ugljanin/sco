@@ -16,7 +16,8 @@ import {
   getExpectedEvents,
   getMessageReceivedFrequency,
   getMaximumOccurancesObject,
-  getSCOdefinition
+  getSCOdefinition,
+  addToArrayOfObjects
 } from './utilities.js';
 
 config();
@@ -138,7 +139,8 @@ const init = async () => {
 
         // Add the event at the begining of the events Array
         if( !isEventAlreadyDetected ) {
-          data.events.unshift( detectedEvent )
+					data.events = addToArrayOfObjects( data.events, detectedEvent );
+          // data.events.unshift( detectedEvent )
         }
 
         // Evaluate action rules
