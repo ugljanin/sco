@@ -74,17 +74,18 @@ export const getExpectedEvents = async ( scoDefinition ) => {
   }
   scoDefinition?.eventDetection.forEach( ( eventDetection ) => {
 
-    eventDetection.expectedEvents.forEach( ( expectedEvents ) => {
+    eventDetection.expectedEvents.forEach( ( rule ) => {
+
       const obj={};
-      if( eventDetection.sourceType === 'social-connector' ) {
-        obj.connector=eventDetection.connector;
-        obj.frequency=eventDetection.content?.frequency;
+      if( scoDefinition.eventDetection.sourceType === 'social-connector' ) {
+        obj.connector=scoDefinition.eventDetection.connector;
+        obj.frequency=scoDefinition.eventDetection.content?.frequency;
       }
-      if( eventDetection.sourceType === 'iot-connector' ) {
-        obj.connector=eventDetection.connector;
+      if( scoDefinition.eventDetection.sourceType === 'iot-connector' ) {
+        obj.connector=scoDefinition.eventDetection.connector;
         obj.frequency='once in 2 seconds';
       }
-      obj.type=expectedEvents.event.type;
+      obj.type=rule.event.type;
       arr = [ ...arr, obj ];
     } )
   } )
