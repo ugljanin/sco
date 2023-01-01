@@ -95,7 +95,7 @@ const subscribeToTopic = ( mqttClient, mqttTopic ) => {
   mqttClient.subscribe(
     mqttTopic,
     ( err ) => {
-      console.log( 'Waiting for MQTT data...' );
+      console.log( `Waiting for MQTT data for topic ${mqttTopic}` );
     }
   )
 }
@@ -143,7 +143,6 @@ export async function detectEvent( data, engine, mqttClient, eventSource ) {
         if ( mqttClient.connected ) {
           subscribeToTopic( mqttClient, mqttTopic );
         }
-
 		  } else {
 			  throw new Error( 'Request eventDetection timeframe does not allow engine to run' );
 		  }
@@ -153,7 +152,6 @@ export async function detectEvent( data, engine, mqttClient, eventSource ) {
 
     mqttClient.on( 'message', ( topic, message ) => {
       // If it is expired delete rule and unsubscribe
-
       currentDate = new Date()
       if (
         dateFrom > currentDate.getTime() ||
@@ -163,7 +161,7 @@ export async function detectEvent( data, engine, mqttClient, eventSource ) {
           mqttTopic,
           ( err ) => {
             console.error( err )
-		  }
+		  		}
         )
         eventSource.expectedEvents.forEach( (
           condition,
@@ -176,8 +174,7 @@ export async function detectEvent( data, engine, mqttClient, eventSource ) {
       }
       // TODO proveri datum, i ako je datum van opsega, odjavi se sa topica, i ukloni pravilo.
       const obj = JSON.parse( message.toString() )
-      // console.log(message.toString())
-      // console.log(obj)
+			// console.log(obj.origin, obj.location, obj.time);
 
       // Run the engine to evaluate only for the messages related to this SCO definition
       if( eventSource.name === obj.origin && eventSource.location === obj.location ) {

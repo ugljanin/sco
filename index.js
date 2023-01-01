@@ -44,7 +44,7 @@ const init = async () => {
     );
   }
 
-  const definedEvents = await getExpectedEvents( scoDefinition );
+  const expectedEvents = await getExpectedEvents( scoDefinition );
 
   scoDefinition?.eventDetection?.forEach( ( item ) => {
     detectEvent( data, engine, mqttClient, item );
@@ -58,14 +58,9 @@ const init = async () => {
    * Detected operator used for evaluating whether action should execute.
    */
   engine.addOperator( 'detected', ( factValue, jsonValue ) => {
-    let messageReceivedFrequency;
     const endDate = new Date();
-
-    definedEvents?.forEach( ( event ) => {
-      if ( event.type === jsonValue.type ) {
-        messageReceivedFrequency = getMessageReceivedFrequency( event.frequency );
-      }
-    } );
+		const detectedEvent = expectedEvents?.find( ( event ) => event.type === jsonValue.type );
+		const messageReceivedFrequency = getMessageReceivedFrequency( detectedEvent.frequency );
 
     // How many times the event is detected in some period of time.
     const { startDate, maximumOccurances } = getMaximumOccurancesObject( jsonValue.freshness );
@@ -140,7 +135,6 @@ const init = async () => {
         // Add the event at the begining of the events Array
         if( !isEventAlreadyDetected ) {
 					data.events = addToArrayOfObjects( data.events, detectedEvent );
-          // data.events.unshift( detectedEvent )
         }
 
         // Evaluate action rules

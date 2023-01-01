@@ -67,7 +67,6 @@ export const connectToMQTT = async () => {
 
 export const getExpectedEvents = async ( scoDefinition ) => {
   console.log( 'Loading expected events.' );
-  console.log( scoDefinition);
   let arr=[];
 
   if ( !scoDefinition.eventDetection ) {
@@ -188,7 +187,8 @@ export const getMaximumOccurancesObject = ( freshness ) => {
 }
 
 export const addToArrayOfObjects = ( array, element ) => {
-	console.log(array.length, parseInt( process.env.MAXIMUM_NUMBER_OF_DETECTED_EVENTS_STORED, 10 ) );
+
+	console.log(`Stored ${array.length} events of maximum ${parseInt( process.env.MAXIMUM_NUMBER_OF_DETECTED_EVENTS_STORED, 10 )}` );
   if ( array.length === parseInt( process.env.MAXIMUM_NUMBER_OF_DETECTED_EVENTS_STORED, 10 ) ) {
 		array.pop();  // remove the first element
   }
