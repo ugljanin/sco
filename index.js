@@ -25,7 +25,7 @@ config();
 const data = {
   events: [],
   actions: [],
-  requests: [],
+  requests: []
 };
 
 const init = async () => {
@@ -58,7 +58,7 @@ const init = async () => {
    * Detected operator used for evaluating whether action should execute.
    */
   engine.addOperator( 'detected', ( factValue, jsonValue ) => {
-    const endDate = new Date();
+    const endDate = Date.now();
     const detectedEvent = expectedEvents?.find(
       ( event ) => event.type === jsonValue.type
     );
@@ -81,10 +81,9 @@ const init = async () => {
 
     if ( maximumOccurances === 1 ) {
       const exists = factValue?.some( ( k ) => {
-        const eventDate = new Date( k.date );
         return (
-          eventDate >= startDate &&
-          eventDate <= endDate &&
+          k.date >= startDate &&
+          k.date <= endDate &&
           k.type === jsonValue.type
         );
       } );
@@ -96,14 +95,14 @@ const init = async () => {
       const exists = [];
       for ( let i = 0; i < factValue?.length; i+=1 ) {
         const k = factValue[i];
-        const eventDate = k.date;
         if (
-          eventDate >= startDate &&
-          eventDate <= endDate &&
+          k.date >= startDate &&
+          k.date <= endDate &&
           k.type === jsonValue.type
         ) {
           exists.push( k );
         }
+
         if ( exists.length === quantity ) {
           break;
         }

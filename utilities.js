@@ -143,39 +143,39 @@ export const postData = async ( url = '', data = {} ) => {
 export const getMaximumOccurancesObject = ( freshness ) => {
   let startDate; let maximumOccurances;
   if ( freshness === 'ever' ) {
-    startDate = new Date( moment().subtract( 1000000000, 'seconds' ) );
+    startDate = moment().subtract( 1000000000, 'seconds' ).valueOf();
     maximumOccurances = 1;
   }
   if ( freshness === 'moment ago' ) {
-    startDate = new Date( moment().subtract( 2, 'seconds' ) );
+    startDate = moment().subtract( 2, 'seconds' ).valueOf();
     maximumOccurances = 1;
   }
   if ( freshness === 'a minute ago' ) {
-    startDate = new Date( moment().subtract( 1, 'minutes' ) );
+    startDate = moment().subtract( 1, 'minutes' ).valueOf();
     maximumOccurances = 60;
   }
   if ( freshness === '5 minutes ago' ) {
-    startDate = new Date( moment().subtract( 5, 'minutes' ) );
+    startDate = moment().subtract( 5, 'minutes' ).valueOf();
     maximumOccurances = 300;
   }
   if ( freshness === 'half an hour ago' ) {
-    startDate = new Date( moment().subtract( 30, 'minutes' ) );
+    startDate = moment().subtract( 30, 'minutes' ).valueOf();
     maximumOccurances = 1800;
   }
   if ( freshness === 'an hour ago' ) {
-    startDate = new Date( moment().subtract( 60, 'minutes' ) );
+    startDate = moment().subtract( 60, 'minutes' ).valueOf();
     maximumOccurances = 3600;
   }
   if ( freshness === 'last day' ) {
-    startDate = new Date( moment().subtract( 1, 'days' ) );
+    startDate = moment().subtract( 1, 'days' ).valueOf();
     maximumOccurances = 86400;
   }
   if ( freshness === 'last 2 days' ) {
-    startDate = new Date( moment().subtract( 2, 'days' ) );
+    startDate = moment().subtract( 2, 'days' ).valueOf();
     maximumOccurances = 172800;
   }
   if ( freshness === 'last week' ) {
-    startDate = new Date( moment().subtract( 7, 'days' ) );
+    startDate = moment().subtract( 7, 'days' ).valueOf();
     maximumOccurances = 604800;
   }
   const obj = {
