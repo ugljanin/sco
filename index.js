@@ -17,7 +17,7 @@ import {
   getMessageReceivedFrequency,
   getMaximumOccurancesObject,
   getSCOdefinition,
-  addToArrayOfObjects
+  addToArrayOfObjects,
 } from './utilities.js';
 
 config();
@@ -59,14 +59,20 @@ const init = async () => {
    */
   engine.addOperator( 'detected', ( factValue, jsonValue ) => {
     const endDate = new Date();
-		const detectedEvent = expectedEvents?.find( ( event ) => event.type === jsonValue.type );
-		const messageReceivedFrequency = getMessageReceivedFrequency( detectedEvent.frequency );
+    const detectedEvent = expectedEvents?.find(
+      ( event ) => event.type === jsonValue.type
+    );
+    const messageReceivedFrequency = getMessageReceivedFrequency(
+      detectedEvent.frequency
+    );
 
     // How many times the event is detected in some period of time.
-    const { startDate, maximumOccurances } = getMaximumOccurancesObject( jsonValue.freshness );
+    const { startDate, maximumOccurances } = getMaximumOccurancesObject(
+      jsonValue.freshness
+    );
 
     const maximumOccurancesWithoutTolerance =
-			maximumOccurances / messageReceivedFrequency;
+      maximumOccurances / messageReceivedFrequency;
 
     // Calculate how many events should happen in some time frame, based on the message received frequency and tolerance
     const quantity =
@@ -87,16 +93,23 @@ const init = async () => {
     }
 
     if ( maximumOccurances > 1 ) {
-      const exists = factValue?.filter( ( k ) => {
-        const eventDate = new Date( k.date );
-        return (
+      const exists = [];
+      for ( let i = 0; i < factValue?.length; i+=1 ) {
+        const k = factValue[i];
+        const eventDate = k.date;
+        if (
           eventDate >= startDate &&
           eventDate <= endDate &&
           k.type === jsonValue.type
-        );
-      } );
+        ) {
+          exists.push( k );
+        }
+        if ( exists.length === quantity ) {
+          break;
+        }
+      }
 
-      if ( exists?.length && process.env.DEBUGGING === "yes" ) {
+      if ( exists?.length && process.env.DEBUGGING === 'yes' ) {
         console.log(
           `${exists[0].type.yellow} \tdetected ${
             exists?.length
@@ -104,8 +117,7 @@ const init = async () => {
         );
       }
 
-      if ( exists?.length >= parseInt( quantity, 10 ) )
-        return true;
+      if ( exists?.length >= parseInt( quantity, 10 ) ) return true;
     }
 
     return false;
@@ -125,28 +137,25 @@ const init = async () => {
         );
 
         // List all detected events
-        if( process.env.DEBUGGING === "yes" )
-          console.log( data.events );
+        if ( process.env.DEBUGGING === 'yes' ) console.log( data.events );
 
         const isEventAlreadyDetected = data.events.some(
           ( i ) => i.type === detectedEvent.type && i.date === detectedEvent.date
         );
 
         // Add the event at the begining of the events Array
-        if( !isEventAlreadyDetected ) {
-					data.events = addToArrayOfObjects( data.events, detectedEvent );
+        if ( !isEventAlreadyDetected ) {
+          data.events = addToArrayOfObjects( data.events, detectedEvent );
         }
 
         // Evaluate action rules
         engine.run( data );
-
       }
     } )
     .on( 'failure', async ( event, almanac ) => {
       // console.error( event );
     } );
-
-}
+};
 
 try {
   await init();
