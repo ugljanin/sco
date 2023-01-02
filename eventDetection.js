@@ -174,7 +174,7 @@ export async function detectEvent( data, engine, mqttClient, eventSource ) {
       }
       // TODO proveri datum, i ako je datum van opsega, odjavi se sa topica, i ukloni pravilo.
       const obj = JSON.parse( message.toString() )
-			// console.log(obj.origin, obj.location, obj.time);
+      // console.log(obj.origin, obj.location, obj.time);
 
       // Run the engine to evaluate only for the messages related to this SCO definition
       if( eventSource.name === obj.origin && eventSource.location === obj.location ) {
