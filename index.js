@@ -80,13 +80,11 @@ const init = async () => {
       ( maximumOccurancesWithoutTolerance * process.env.TOLERANCE ) / 100;
 
     if ( maximumOccurances === 1 ) {
-      const exists = factValue?.some( ( k ) => {
-        return (
-          k.date >= startDate &&
+      const exists = factValue?.some( ( k ) => (
+        k.date >= startDate &&
           k.date <= endDate &&
           k.type === jsonValue.type
-        );
-      } );
+      ) );
 
       return exists;
     }
